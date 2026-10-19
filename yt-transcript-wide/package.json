@@ -1,0 +1,16 @@
+{
+  "name": "clean-transcript",
+  "private": true,
+  "description": "Chrome extension: clean, speaker-grouped YouTube transcripts with Claude analysis, translation and a personal Library.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "lint": "npx --yes eslint@9 .",
+    "format": "npx --yes prettier@3 --write .",
+    "format:check": "npx --yes prettier@3 --check .",
+    "check": "npm run format:check && npm run lint && npm test && npm run build"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

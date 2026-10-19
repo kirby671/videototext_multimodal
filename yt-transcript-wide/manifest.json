@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Clean Transcript & Key Learnings for YouTube",
+  "short_name": "Clean Transcript",
+  "version": "1.16.1",
+  "description": "Clean, speaker-grouped YouTube transcripts with Claude’s key learnings, concepts and company glossary, kept in your own Library.",
+  "permissions": ["storage", "contextMenus", "scripting", "unlimitedStorage", "alarms", "offscreen"],
+  "host_permissions": ["https://www.youtube.com/*", "https://api.anthropic.com/*"],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["src/content/page-hook.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["src/core/transcript-core.js", "src/ui/panel.js", "src/content/youtube.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "src/pages/options/options.html",
+  "action": {
+    "default_title": "Clean transcript — show/hide on YouTube, or paste any transcript",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "minimum_chrome_version": "111"
+}

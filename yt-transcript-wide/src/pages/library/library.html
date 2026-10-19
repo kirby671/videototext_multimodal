@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Transcript Library</title>
+    <link rel="stylesheet" href="library.css" />
+  </head>
+  <body>
+    <header class="top">
+      <h1>Library</h1>
+      <div class="views" role="tablist" aria-label="Library views">
+        <button type="button" role="tab" id="tabList" data-view="list" aria-selected="true" aria-controls="listView">
+          Transcripts
+        </button>
+        <button type="button" role="tab" id="tabTrends" data-view="trends" aria-selected="false" aria-controls="trends">
+          Trends
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="tabNetwork"
+          data-view="network"
+          aria-selected="false"
+          aria-controls="network"
+        >
+          Network
+        </button>
+      </div>
+      <span class="count" id="count"></span>
+      <span class="upd" id="upd" hidden></span>
+      <nav><a href="../analyze/analyze.html">Paste a transcript</a><a href="../options/options.html">Settings</a></nav>
+    </header>
+    <section class="trends" id="trends" role="tabpanel" aria-labelledby="tabTrends" hidden></section>
+    <section class="trends" id="network" role="tabpanel" aria-labelledby="tabNetwork" hidden></section>
+    <div class="layout" id="listView" role="tabpanel" aria-labelledby="tabList">
+      <aside aria-label="Your transcripts">
+        <div class="tools">
+          <label class="search">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 9.5 16a6.47 6.47 0 0 0 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+              />
+            </svg>
+            <input
+              id="q"
+              type="search"
+              placeholder="Search all transcripts"
+              aria-label="Search your transcripts"
+              autocomplete="off"
+            />
+          </label>
+          <select id="sort" aria-label="Sort">
+            <option value="new">Newest</option>
+            <option value="old">Oldest</option>
+            <option value="updated">Recently updated</option>
+            <option value="title">Title A–Z</option>
+            <option value="long">Longest</option>
+          </select>
+        </div>
+        <div class="selbar" id="selbar" hidden>
+          <span id="selCount">0 selected</span>
+          <button class="tlink" id="selAll" type="button">Select all</button>
+          <button class="tlink" id="selNone" type="button">None</button>
+          <span class="grow"></span>
+          <button class="btn small primary" id="selGo" type="button">Download</button>
+          <button class="btn small" id="selCancel" type="button">Cancel</button>
+        </div>
+        <ul class="list" id="list" role="listbox" aria-label="Transcripts"></ul>
+        <div class="listfoot">
+          <div class="dlrow">
+            <button
+              class="btn primary"
+              id="dlAll"
+              type="button"
+              title="Download these transcripts as Markdown, with their titles, insights and companies"
+            >
+              Download all
+            </button>
+            <button class="btn" id="dlPick" type="button" title="Tick the transcripts you want, then download them">
+              Choose…
+            </button>
+            <button class="btn ghost" id="dlOptsBtn" type="button" aria-expanded="false" aria-controls="dlOpts">
+              Options
+            </button>
+          </div>
+          <div class="dlopts" id="dlOpts" hidden>
+            <fieldset>
+              <legend>Include</legend>
+              <label><input type="checkbox" id="oTranscript" checked /> Transcripts</label>
+              <label><input type="checkbox" id="oInsights" checked /> Insights</label>
+              <label><input type="checkbox" id="oCompanies" checked /> Companies</label>
+            </fieldset>
+            <fieldset>
+              <legend>Transcript</legend>
+              <label><input type="radio" name="oVer" value="distilled" checked /> Distilled, where there is one</label>
+              <label><input type="radio" name="oVer" value="clean" /> Clean, word for word</label>
+            </fieldset>
+            <fieldset>
+              <legend>Download as</legend>
+              <label><input type="radio" name="oFmt" value="one" checked /> One Markdown file</label>
+              <label><input type="radio" name="oFmt" value="zip" /> A .zip with one file per video</label>
+            </fieldset>
+          </div>
+          <div class="syncrow" id="syncRow">
+            <div class="synchead">
+              <span class="lbl">For Claude</span
+              ><span class="syncstat" id="syncStat" role="status" aria-live="polite"></span>
+            </div>
+            <div class="syncbtns">
+              <button
+                class="btn"
+                id="syncChoose"
+                type="button"
+                title="Keep every transcript as a Markdown file in a folder you choose. Add that folder to a chat in the Claude desktop app and ask Claude about your Library."
+              >
+                Sync to a folder…
+              </button>
+              <button class="btn primary" id="syncResume" type="button" hidden>Resume syncing</button>
+              <button class="btn" id="syncNow" type="button" hidden>Sync now</button>
+              <button class="tlink" id="syncChange" type="button" hidden>Change folder</button>
+              <button class="tlink" id="syncStop" type="button" hidden>Stop</button>
+            </div>
+          </div>
+          <div class="bkrow">
+            <span class="lbl">Backup</span>
+            <button
+              class="btn"
+              id="export"
+              type="button"
+              title="Save every transcript and analysis as one file you can import again later"
+            >
+              Export
+            </button>
+            <button class="btn" id="import" type="button">Import</button>
+            <input id="file" type="file" accept=".json,application/json" hidden />
+          </div>
+          <span class="msg" id="msg" role="status" aria-live="polite"></span>
+        </div>
+      </aside>
+      <main>
+        <div class="view">
+          <button class="btn back" id="back" type="button">← All transcripts</button>
+          <div class="vempty" id="vempty"></div>
+          <div id="vbody" hidden>
+            <div class="vhead">
+              <h2 id="vtitle"></h2>
+              <p class="vmeta" id="vmeta"></p>
+              <div class="vact">
+                <a class="btn" id="vopen" target="_blank" rel="noopener">Open on YouTube ↗</a>
+                <button class="btn danger" id="vdel" type="button">Delete</button>
+                <span class="confirm" id="vconfirm" hidden
+                  >Delete this transcript and its analysis?
+                  <button class="btn solid-danger" id="vdelyes" type="button">Delete</button
+                  ><button class="btn" id="vdelno" type="button">Cancel</button></span
+                >
+              </div>
+            </div>
+            <div id="mount"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="../../core/transcript-core.js"></script>
+    <script src="../../ui/panel.js"></script>
+    <script src="../../features/trends.js"></script>
+    <script src="../../features/network.js"></script>
+    <script src="../../features/export.js"></script>
+    <script src="../../features/pdf.js"></script>
+    <script src="../../features/folder-sync.js"></script>
+    <script src="library.js"></script>
+  </body>
+</html>

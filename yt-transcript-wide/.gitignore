@@ -1,0 +1,13 @@
+# Build output
+dist/
+
+# Dependencies (none are needed; never let them into the extension folder,
+# Chrome refuses to load an unpacked extension that contains them)
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp

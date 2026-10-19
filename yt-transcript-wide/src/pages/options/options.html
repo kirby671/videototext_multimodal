@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clean Transcript Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Clean Transcript &amp; Key Learnings</h1>
+      <p class="lede">
+        Settings for the transcript card on YouTube watch pages. To analyze a transcript from anywhere, open
+        <a href="../analyze/analyze.html">Analyze a transcript</a> or select the text and right-click → “Clean &amp;
+        analyze this transcript”.
+      </p>
+
+      <section id="keyNote" class="note warn" role="note" hidden>
+        <h2>Add your API key to analyze with Claude</h2>
+        <p>
+          Getting, cleaning and saving transcripts works without a key.
+          <b>“Analyze with Claude”, trend reports and the company network need your own Anthropic API key</b>
+          (translating with Claude does too, when Chrome’s free translator can’t). It’s stored locally in this browser
+          and only sent to Anthropic when you run one of them.
+        </p>
+        <ol>
+          <li>
+            Create a key at
+            <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener"
+              >console.anthropic.com</a
+            >. You’ll need to add some credit to your Anthropic account; the card shows what each run costs.
+          </li>
+          <li>Paste it into <b>Anthropic API key</b> below.</li>
+          <li>Click <b>Test</b> to check it works, then <b>Save</b>.</li>
+        </ol>
+      </section>
+      <section id="keyOk" class="note ok" role="status" hidden>
+        <h2>Key saved</h2>
+        <p>Go back to your YouTube tab and click “Analyze with Claude”.</p>
+      </section>
+
+      <section>
+        <h2>Claude</h2>
+        <label for="apiKey">Anthropic API key</label>
+        <div class="row">
+          <input id="apiKey" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…" />
+          <button id="testKey" type="button">Test</button>
+        </div>
+        <p class="hint">
+          Needed for “Analyze with Claude” (one call: speakers, themes, concepts, companies), trend reports and the
+          company network. Create one at
+          <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a
+          >. It’s stored only in this browser’s extension storage and sent only to api.anthropic.com. Without a key, use
+          “Copy prompt for claude.ai” on the card.
+        </p>
+        <p id="testMsg" class="msg" role="status"></p>
+
+        <label for="model">Model</label>
+        <select id="model">
+          <option value="claude-opus-5-5">Claude Opus 5.5 — best quality (default)</option>
+          <option value="claude-sonnet-5-5">Claude Sonnet 5.5 — faster, cheaper</option>
+          <option value="claude-haiku-5-5">Claude Haiku 5.5 — fastest, cheapest</option>
+          <option value="claude-fable-5-1">Claude Fable 5.1 — deepest reasoning</option>
+        </select>
+
+        <label for="analysisLang">Language for Claude’s analysis</label>
+        <select id="analysisLang"></select>
+        <p class="hint">
+          Insights, themes, concepts, companies and the trend report are written in this language, whatever language the
+          video is in. It costs about the same as an analysis in English. To translate the transcript itself, use
+          “Translate to” above the transcript: it’s free with Chrome’s built-in translator.
+        </p>
+
+        <label for="focus">What matters most to you (sent to Claude with every analysis)</label>
+        <textarea id="focus"></textarea>
+        <p class="hint">
+          Edit freely — this is sent to Claude as the reader’s priorities.
+          <button id="resetFocus" type="button" style="padding: 2px 8px; font-size: 12px">Reset to default</button>
+        </p>
+      </section>
+
+      <section>
+        <h2>Transcript cleaning</h2>
+        <label class="check"
+          ><input id="removeFillers" type="checkbox" />
+          <span>Remove “um/uh” and stutters (“the the”, “a a a”)</span></label
+        >
+        <label class="check"
+          ><input id="removeTags" type="checkbox" /> <span>Remove sound tags like [Music] and [Applause]</span></label
+        >
+        <label class="check"
+          ><input id="autoLoad" type="checkbox" />
+          <span>Fetch the transcript automatically when a video opens</span></label
+        >
+        <label class="check"
+          ><input id="keepYouTubePanel" type="checkbox" />
+          <span>Leave YouTube’s own transcript panel open after fetching</span></label
+        >
+      </section>
+
+      <section>
+        <h2>Spending</h2>
+        <p class="hint" style="margin-top: 0" id="spendText">Each run shows its cost on the card when it finishes.</p>
+        <div class="bar" style="margin-top: 10px">
+          <button id="resetSpend" type="button">Reset the running total</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Library</h2>
+        <p class="hint" style="margin-top: 0">
+          Every transcript you get on YouTube or paste in is kept, with its speakers and analysis, so you can find it
+          again and never pay twice. <span id="cacheCount"></span> It’s stored in this browser only: use
+          <b>Export backup</b> in the Library to keep a copy.
+        </p>
+        <div class="bar" style="margin-top: 10px">
+          <button id="openLibrary" type="button" class="primary">Open Library</button
+          ><button id="clearCache" type="button">Delete everything in the Library…</button
+          ><span id="clearConfirm" hidden>
+            Delete all <span id="clearN"></span>? This can’t be undone.
+            <button id="clearYes" type="button">Delete all</button>
+            <button id="clearNo" type="button">Cancel</button></span
+          >
+        </div>
+      </section>
+
+      <div class="bar">
+        <button id="save" class="primary" type="button">Save</button>
+        <span id="saveMsg" class="msg" role="status"></span>
+      </div>
+    </main>
+    <script src="../../core/transcript-core.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
